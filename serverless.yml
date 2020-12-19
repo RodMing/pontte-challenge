@@ -1,0 +1,73 @@
+service: api-pontte
+
+# Create an optimized package for our functions
+package:
+  individually: true
+  excludeDevDependencies: true
+
+plugins:
+  - serverless-webpack # Minify and zip each lambda to deploy them separately
+  - serverless-offline # Allow local development
+  - serverless-plugin-split-stacks # To migrates cloudFormation resources in to nested stacks
+  - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  stage: dev
+  memorySize: 256
+  endpointType: regional
+  deploymentBucket:
+    blockPublicAccess: true
+  timeout: 10
+  apiGateway:
+    shouldStartNameWithService: true
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
+  projectName: pontte
+  allowedHeaders:
+    - Accept
+    - Content-Type
+    - Content-Length
+    - Authorization
+    - X-Amz-Date
+    - X-Api-Key
+    - X-Amz-Security-Token
+    - X-Amz-User-Agent
+  splitStacks: #Default Configuration
+    nestedStackCount: 5 # Controls the number of created nested stacks
+    perFunction: false
+    perType: false
+    perGroupFunction: true
+  webpack:
+    webpackConfig: "webpack.config.js" # Name of webpack configuration file
+    includeModules:
+      forceExclude:
+        - aws-sdk
+    packager: "npm" # Packager that will be used to package your external modules
+resources:
+  Resources:
+    onlyPath:
+      Type: "AWS::ApiGateway::RequestValidator"
+      Properties:
+        Name: "only-path"
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: false
+        ValidateRequestParameters: true
+
+functions:
+  teste:
+    handler: functions/teste/handler.get
+    timeout: 120
+    events:
+      - http:
+          path: teste
+          method: get
+          cors: true
+    environment:
+      STAGE: ${self:custom.stage}
