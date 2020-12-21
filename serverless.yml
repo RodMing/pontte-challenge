@@ -1,3 +1,5 @@
+org: rodming
+app: ponttechallenge
 service: api-pontte
 
 # Create an optimized package for our functions
