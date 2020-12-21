@@ -45,6 +45,11 @@ module.exports = sequelize => {
                 type: Sequelize.STRING,
                 allowNull: true
             },
+            status: {
+                type: Sequelize.ENUM('approved', 'disapproved'),
+                allowNull: true,
+                defaultValue: null
+            },
             createdAt: {
                 type: Sequelize.DATE,
                 allowNull: false,
@@ -66,7 +71,12 @@ module.exports = sequelize => {
         }
     );
 
-    Contract.associate = models => {};
+    Contract.associate = models => {
+        Contract.hasMany(models.ContractImage, {
+            foreignKey: "contractId",
+            as: "images",
+        });
+    };
 
     /* 
         Retorna somente as propriedades públicas 
@@ -82,6 +92,8 @@ module.exports = sequelize => {
             birthdate: this.birthdate,
             maritalStatus: this.maritalStatus,
             address: this.address,
+            status: this.status,
+            images: this.images ? this.images.map(i => i.public()) : [],
             createdAt: this.createdAt,
             updatedAt: this.updatedAt,
         };

@@ -1,6 +1,7 @@
 module.exports = sequelize => {
     const models = {
         Contract: require("./contract")(sequelize),
+        ContractImage: require("./contractImage")(sequelize),
     };
 
     Object.keys(models).forEach(
