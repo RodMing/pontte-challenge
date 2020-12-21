@@ -91,6 +91,24 @@ functions:
       DB_USERNAME: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-user}
       DB_PASSWORD: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-password}
       DB_NAME: ${self:custom.stage}_${self:custom.projectName}
+  getContract:
+    handler: functions/contract/handler.get
+    timeout: 120
+    events:
+      - http:
+          path: contract/{id}
+          method: get
+          cors: true
+    vpc:
+      securityGroupIds:
+        - ${ssm:/SLS/api-${self:custom.projectName}-${self:custom.stage}/AppSecurityGroup}
+      subnetIds: ${ssm:/SLS/api-${self:custom.projectName}-${self:custom.stage}/AppSubnets~split}
+    environment:
+      DB_HOST: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-host}
+      DB_PORT: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-port}
+      DB_USERNAME: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-user}
+      DB_PASSWORD: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-password}
+      DB_NAME: ${self:custom.stage}_${self:custom.projectName}
   migration:
     handler: functions/migration/handler.get
     timeout: 120

@@ -71,11 +71,21 @@ module.exports = sequelize => {
     /* 
         Retorna somente as propriedades públicas 
     */
-    Contract.prototype.public = () => ({
-        id: this.id,
-        createdAt: this.createdAt,
-        updatedAt: this.updatedAt,
-    });
+    Contract.prototype.public = function () {
+        return {
+            id: this.id,
+            name: this.name,
+            email: this.email,
+            cpf: this.cpf,
+            amount: this.amount,
+            income: this.income,
+            birthdate: this.birthdate,
+            maritalStatus: this.maritalStatus,
+            address: this.address,
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt,
+        };
+    };
 
     return Contract;
 };

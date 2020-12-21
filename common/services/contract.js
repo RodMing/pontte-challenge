@@ -10,5 +10,15 @@ module.exports = ({ Contract }, logger) => ({
         });
 
         return newContract;
+    },
+    getById: async id => {
+        const contract = await Contract.getById(id).then(r => r ? r.public() : null);
+
+        logger.info({
+            param: { id },
+            result: contract
+        });
+
+        return contract;
     }
 });

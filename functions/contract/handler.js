@@ -25,5 +25,10 @@ module.exports = {
         .use(cpfValidator)
         .onError(schemaError)
         .onError(transactionError)
-        .onError(serverError)
+        .onError(serverError),
+    get: middy(require("./get"))
+        .before(logger)
+        .before(services)
+        .use(doNotWaitForEmptyEventLoop({ runOnError: true }))
+        .onError(serverError),
 };

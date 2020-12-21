@@ -6,7 +6,7 @@ module.exports = {
     body: {
       type: "object",
       properties: {
-        name: { type: "string" },
+        name: { type: "string", minLength: 1 },
         email: { type: "string", format: "email" },
         cpf: { type: "string", pattern: "^[0-9]{11}$" },
         amount: { type: "number", exclusiveMinimum: 0 }
