@@ -2,7 +2,7 @@
 
 const errorResponse = require("../utils/errorResponse");
 
-module.exports = () => (handler, next) => {
+module.exports = (handler, next) => {
     const logger = handler.event.logger || require("../utils/logger");
 
     logger.info({
