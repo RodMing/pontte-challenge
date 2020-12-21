@@ -4,7 +4,7 @@ module.exports = ({ Contract }, logger) => ({
     create: async (data, transaction) => {
         const newContract = await Contract.create(data, transaction);
 
-        logger({
+        logger.info({
             param: data,
             result: newContract
         });

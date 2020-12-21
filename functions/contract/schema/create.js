@@ -8,7 +8,7 @@ module.exports = {
       properties: {
         name: { type: "string" },
         email: { type: "string", format: "email" },
-        cpf: { type: "string", regex: "^[0-9]{11}$" },
+        cpf: { type: "string", pattern: "^[0-9]{11}$" },
         amount: { type: "number", exclusiveMinimum: 0 }
       },
       required: [

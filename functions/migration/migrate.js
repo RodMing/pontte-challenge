@@ -1,8 +1,11 @@
 "use strict";
 
-module.exports = async ({ transaction, sequelize, logger }, context, callback) => {
-    await sequelize.sync();
-    await transaction.commit();
+module.exports = async ({ queryStringParameters, sequelize, logger }, context, callback) => {
+    const { force } = queryStringParameters;
+
+    await sequelize.sync({
+        force: Boolean(force) || false
+    });
 
     return callback(null, {
         statusCode: 200,

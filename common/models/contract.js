@@ -26,11 +26,11 @@ module.exports = sequelize => {
                 allowNull: false
             },
             amount: {
-                type: Sequelize.NUMBER,
+                type: Sequelize.FLOAT,
                 allowNull: false
             },
             income: {
-                type: Sequelize.NUMBER,
+                type: Sequelize.FLOAT,
                 allowNull: true
             },
             birthdate: {

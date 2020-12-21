@@ -1,7 +1,9 @@
 "use strict";
 
-module.exports = async ({ transaction, services, logger }, context, callback) => {
-    console.log(services, logger);
+module.exports = async ({ body, transaction, services, logger }, context, callback) => {
+    const { contractService } = services;
+
+    const contract = await contractService().create(body, transaction);
 
     await transaction.commit();
 
@@ -11,6 +13,6 @@ module.exports = async ({ transaction, services, logger }, context, callback) =>
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Credentials": true,
         },
-        body: JSON.stringify({name: "Rodrigo"})
+        body: JSON.stringify(contract)
     });
 };
