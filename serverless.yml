@@ -70,13 +70,13 @@ resources:
         ValidateRequestParameters: true
 
 functions:
-  teste:
-    handler: functions/teste/handler.get
+  postContract:
+    handler: functions/contract/handler.post
     timeout: 120
     events:
       - http:
-          path: teste
-          method: get
+          path: contract
+          method: post
           cors: true
     vpc:
       securityGroupIds:

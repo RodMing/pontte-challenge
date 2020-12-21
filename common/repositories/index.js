@@ -1,3 +1,5 @@
 "use strict";
 
-module.exports = models => ({});
+module.exports = models => ({
+    Contract: require("./contract")(models),
+});

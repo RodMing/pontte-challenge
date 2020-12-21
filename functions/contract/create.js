@@ -1,7 +1,7 @@
 "use strict";
 
-module.exports = async (event, context, callback) => {
-    console.log(event);
+module.exports = async ({ services, logger }, context, callback) => {
+    console.log(services, logger);
 
     return callback(null, {
         statusCode: 200,

@@ -3,16 +3,18 @@
 const servicesLoadedMap = new Map();
 
 function getService(serviceName, module) {
-  if (!servicesLoadedMap.has(serviceName)) {
-    servicesLoadedMap.set(serviceName, module());
-  }
-  return servicesLoadedMap.get(serviceName);
+    if (!servicesLoadedMap.has(serviceName)) {
+        servicesLoadedMap.set(serviceName, module());
+    }
+    return servicesLoadedMap.get(serviceName);
 }
 
 module.exports = (sequelize, logger) => {
-  const repositories = require("../repositories")(
-    require("../models")(sequelize)
-  );
+    const repositories = require("../repositories")(
+        require("../models")(sequelize)
+    );
 
-  return {};
+    return {
+        contractService: () => getService("contract", () => require("./contract")(repositories, logger)),
+    };
 };

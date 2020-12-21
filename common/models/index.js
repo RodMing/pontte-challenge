@@ -1,6 +1,8 @@
 module.exports = sequelize => {
-    const models = {};
-  
+    const models = {
+        Contract: require("./contract")(sequelize),
+    };
+
     Object.keys(models).forEach(
         modelName => {
             if ("associate" in models[modelName]) {
@@ -8,7 +10,6 @@ module.exports = sequelize => {
             }
         }
     );
-  
+
     return models;
 };
-  
