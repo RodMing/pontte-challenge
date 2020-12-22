@@ -9,9 +9,7 @@ module.exports = {
         const { id } = pathParameters;
 
         contractService().getById(id).then(contract => {
-            if (contract.state != 'approval') {
-                reject('invalid_state');
-            } else if (contract.status !== null) {
+            if (contract.status !== null) {
                 reject('finished');
             } else {
                 resolve();
@@ -19,11 +17,7 @@ module.exports = {
         });
     }),
     onError: (handler, next) => {
-        if (handler.error === 'invalid_state') {
-            handler.response = errorResponse(406, {
-                code: "Estado anterior incompleto"
-            });
-        } else if (handler.error === 'finished') {
+        if (handler.error === 'finished') {
             handler.response = errorResponse(406, {
                 code: "Contrato finalizado"
             });

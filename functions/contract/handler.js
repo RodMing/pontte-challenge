@@ -18,6 +18,7 @@ const databaseError = require("./middlewares/databaseError");
 const allowedFields = require("./middlewares/allowedFields");
 const allowUpload = require("./middlewares/allowUpload");
 const allowApproval = require("./middlewares/allowApproval");
+const allowUpdate = require("./middlewares/allowUpdate");
 
 module.exports = {
     post: middy(require("./create"))
@@ -52,6 +53,7 @@ module.exports = {
         .before(logger)
         .before(services)
         .use(doNotWaitForEmptyEventLoop({ runOnError: true }))
+        .use(allowUpdate)
         .use(validator({ inputSchema: require("./schema/update") }))
         .use(cpfValidator)
         .use(allowedFields)
