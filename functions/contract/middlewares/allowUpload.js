@@ -11,6 +11,8 @@ module.exports = {
         contractService().getById(id).then(contract => {
             if (contract.state != 'upload') {
                 reject('invalid_state');
+            } else if (contract.status !== null) {
+                reject('finished');
             } else {
                 resolve();
             }
