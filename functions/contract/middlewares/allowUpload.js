@@ -21,7 +21,7 @@ module.exports = {
     onError: (handler, next) => {
         if (handler.error === 'invalid_state') {
             handler.response = errorResponse(406, {
-                code: "Estado anterior incompleto"
+                code: "Estado inválido"
             });
         }
         next();

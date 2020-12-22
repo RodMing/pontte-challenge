@@ -21,10 +21,6 @@ module.exports = {
             handler.response = errorResponse(406, {
                 code: "Contrato finalizado"
             });
-        } else if (handler.error === 'finished') {
-            handler.response = errorResponse(406, {
-                code: "Contrato finalizado"
-            });
         }
         next();
     }
