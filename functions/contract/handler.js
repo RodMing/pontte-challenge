@@ -15,6 +15,9 @@ const transaction = require("../../common/middlewares/transaction")(sequelize);
 const transactionError = require("../../common/middlewares/transactionError");
 const cpfValidator = require("../../common/middlewares/cpfValidator");
 const databaseError = require("./middlewares/databaseError");
+const allowedFields = require("./middlewares/allowedFields");
+const allowUpload = require("./middlewares/allowUpload");
+const allowApproval = require("./middlewares/allowApproval");
 
 module.exports = {
     post: middy(require("./create"))
@@ -37,9 +40,33 @@ module.exports = {
         .before(transaction)
         .before(logger)
         .before(services)
+        .use(allowUpload)
         .use(doNotWaitForEmptyEventLoop({ runOnError: true }))
         .use(httpMultipartBodyParser())
         .onError(transactionError)
         .onError(databaseError)
+        .onError(serverError),
+    update: middy(require("./patch"))
+        .before(jsonBodyParser())
+        .before(transaction)
+        .before(logger)
+        .before(services)
+        .use(doNotWaitForEmptyEventLoop({ runOnError: true }))
+        .use(validator({ inputSchema: require("./schema/update") }))
+        .use(cpfValidator)
+        .use(allowedFields)
+        .onError(schemaError)
+        .onError(transactionError)
+        .onError(serverError),
+    approval: middy(require("./approval"))
+        .before(jsonBodyParser())
+        .before(transaction)
+        .before(logger)
+        .before(services)
+        .use(doNotWaitForEmptyEventLoop({ runOnError: true }))
+        .use(allowApproval)
+        .use(validator({ inputSchema: require("./schema/approval") }))
+        .onError(schemaError)
+        .onError(transactionError)
         .onError(serverError),
 };

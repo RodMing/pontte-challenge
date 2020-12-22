@@ -8,5 +8,20 @@ module.exports = ({ Contract, ContractImage }) => ({
       model: ContractImage,
       as: 'images'
     }]
+  }),
+  updateById: (id, data, transaction) => Contract.update(
+    data,
+    {
+      transaction,
+      returning: true,
+      where: { id },
+    }
+  ),
+  approval: (id, status, transaction) => Contract.update({
+    status
+  }, {
+    transaction,
+    returning: true,
+    where: { id }
   })
 });

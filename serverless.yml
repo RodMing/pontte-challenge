@@ -145,3 +145,39 @@ functions:
       DB_USERNAME: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-user}
       DB_PASSWORD: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-password}
       DB_NAME: ${self:custom.stage}_${self:custom.projectName}
+  updateContract:
+    handler: functions/contract/handler.update
+    timeout: 120
+    events:
+      - http:
+          path: contract/{id}
+          method: patch
+          cors: true
+    vpc:
+      securityGroupIds:
+        - ${ssm:/SLS/api-${self:custom.projectName}-${self:custom.stage}/AppSecurityGroup}
+      subnetIds: ${ssm:/SLS/api-${self:custom.projectName}-${self:custom.stage}/AppSubnets~split}
+    environment:
+      DB_HOST: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-host}
+      DB_PORT: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-port}
+      DB_USERNAME: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-user}
+      DB_PASSWORD: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-password}
+      DB_NAME: ${self:custom.stage}_${self:custom.projectName}
+  approval:
+    handler: functions/contract/handler.approval
+    timeout: 120
+    events:
+      - http:
+          path: contract/{id}/approval
+          method: post
+          cors: true
+    vpc:
+      securityGroupIds:
+        - ${ssm:/SLS/api-${self:custom.projectName}-${self:custom.stage}/AppSecurityGroup}
+      subnetIds: ${ssm:/SLS/api-${self:custom.projectName}-${self:custom.stage}/AppSubnets~split}
+    environment:
+      DB_HOST: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-host}
+      DB_PORT: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-port}
+      DB_USERNAME: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-user}
+      DB_PASSWORD: ${ssm:${self:custom.stage}-${self:custom.projectName}-db-password}
+      DB_NAME: ${self:custom.stage}_${self:custom.projectName}

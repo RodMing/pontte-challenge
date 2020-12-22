@@ -15,13 +15,7 @@ module.exports = {
         maritalStatus: { type: "string", minLength: 1 },
         address: { type: "string", minLength: 1 },
         status: { type: "string", enum: ["approved", "disapproved"] }
-      },
-      required: [
-          "name",
-          "email",
-          "cpf",
-          "amount"
-      ]
+      }
     }
   },
   required: [

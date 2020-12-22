@@ -2,6 +2,7 @@
 
 module.exports = ({ Contract, ContractImage }, logger) => ({
     create: async (data, transaction) => {
+        delete data.status;
         const newContract = await Contract.create(data, transaction);
 
         logger.info({
@@ -30,5 +31,25 @@ module.exports = ({ Contract, ContractImage }, logger) => ({
         });
 
         return image;
+    },
+    updateById: async (id, data, transaction) => {
+        const contract = await Contract.updateById(id, data, transaction);
+
+        logger.info({
+            param: { id, data },
+            result: contract
+        });
+
+        return contract;
+    },
+    approval: async (id, status, transaction) => {
+        const contract = await Contract.approval(id, status, transaction);
+
+        logger.info({
+            param: { id, status },
+            result: contract
+        });
+
+        return contract;
     }
 });

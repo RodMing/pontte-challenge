@@ -7,7 +7,7 @@ module.exports = {
     before: ({ event }, next) => {
         const { cpf } = event.body;
 
-        if (!cpfValidator.isValid(cpf)) {
+        if (cpf && !cpfValidator.isValid(cpf)) {
             throw Error('invalidCPF');
         }
     
