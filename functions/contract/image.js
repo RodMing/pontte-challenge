@@ -1,22 +1,21 @@
 "use strict";
 
-module.exports = async ({ body, pathParameters, transaction, services, logger }, context, callback) => {
+module.exports = async ({ body, pathParameters, queryStringParameters, transaction, services, logger }, context, callback) => {
     const { contractService, s3Service } = services;
     const { id: contractId } = pathParameters;
+    const { type } = queryStringParameters;
 
-    await Promise.all(Object.keys(body).map(async type => {
-        const uri = await s3Service().upload({
-            bucket: 'teste',
-            key: 'oi',
-            file: body[type]
-        });
+    const uri = await s3Service().upload({
+        bucket: 'pontte-mingattos',
+        key: `${type}_${contractId}_${new Date().getTime()}`,
+        file: body
+    });
 
-        return contractService().sendImage({
-            type,
-            contractId,
-            uri
-        }, transaction);
-    }));
+    const image = await contractService().sendImage({
+        type,
+        contractId,
+        uri
+    }, transaction);
 
     await transaction.commit();
 
@@ -28,6 +27,6 @@ module.exports = async ({ body, pathParameters, transaction, services, logger },
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Credentials": true,
         },
-        body: JSON.stringify(contract)
+        body: JSON.stringify(image)
     });
 };

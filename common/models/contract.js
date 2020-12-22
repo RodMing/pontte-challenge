@@ -4,6 +4,22 @@ const { Model, Sequelize } = require("sequelize");
 
 module.exports = sequelize => {
     class Contract extends Model {
+        getState() {
+            const docImage = this.images ? this.images.find(i => ['cpf', 'cnh'].includes(i.type)) : null;
+
+            let state = 'creation';
+
+            if (this.name && this.email && this.cpf && this.amount) {
+                state = 'upload';
+
+                if (docImage) {
+                    state = 'approval'
+                }
+            }
+
+            return state;
+        };
+
         public() {
             return {
                 id: this.id,
@@ -17,10 +33,11 @@ module.exports = sequelize => {
                 address: this.address,
                 status: this.status,
                 images: this.images ? this.images.map(i => i.public()) : [],
+                state: this.getState(),
                 createdAt: this.createdAt,
                 updatedAt: this.updatedAt,
             };
-        }
+        };
     }
 
     Contract.init(

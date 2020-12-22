@@ -9,9 +9,7 @@ module.exports = logger => ({
     return s3.putObject({
       Bucket: bucket,
       Key: key,
-      Body: file.content,
-      ContentEncoding: file.encoding,
-      ContentType: file.mimetype
+      Body: file,
     }).promise().then(result => {
       logger.info({
         service: "s3",

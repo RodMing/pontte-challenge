@@ -14,6 +14,7 @@ const serverError = require("../../common/middlewares/serverError");
 const transaction = require("../../common/middlewares/transaction")(sequelize);
 const transactionError = require("../../common/middlewares/transactionError");
 const cpfValidator = require("../../common/middlewares/cpfValidator");
+const databaseError = require("./middlewares/databaseError");
 
 module.exports = {
     post: middy(require("./create"))
@@ -39,5 +40,6 @@ module.exports = {
         .use(doNotWaitForEmptyEventLoop({ runOnError: true }))
         .use(httpMultipartBodyParser())
         .onError(transactionError)
+        .onError(databaseError)
         .onError(serverError),
 };
