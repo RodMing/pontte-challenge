@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = ({ Contract }, logger) => ({
+module.exports = ({ Contract, ContractImage }, logger) => ({
     create: async (data, transaction) => {
         const newContract = await Contract.create(data, transaction);
 
@@ -20,5 +20,15 @@ module.exports = ({ Contract }, logger) => ({
         });
 
         return contract;
+    },
+    sendImage: async (data, transaction) => {
+        const image = await ContractImage.create(data, transaction);
+
+        logger.info({
+            param: data,
+            result: image
+        });
+
+        return image;
     }
 });

@@ -16,5 +16,6 @@ module.exports = (sequelize, logger) => {
 
     return {
         contractService: () => getService("contract", () => require("./contract")(repositories, logger)),
+        s3Service: () => getService("S3", () => require("./S3")(logger)),
     };
 };

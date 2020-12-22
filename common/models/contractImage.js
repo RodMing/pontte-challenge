@@ -3,7 +3,18 @@
 const { Model, Sequelize } = require("sequelize");
 
 module.exports = sequelize => {
-    class ContractImage extends Model {}
+    class ContractImage extends Model {
+        public() {
+            return {
+                id: this.id,
+                contractId: this.contractId,
+                type: this.type,
+                uri: this.uri,
+                createdAt: this.createdAt,
+                updatedAt: this.updatedAt,
+            };
+        }
+    }
 
     ContractImage.init(
         {
@@ -15,6 +26,10 @@ module.exports = sequelize => {
             },
             contractId: {
                 type: Sequelize.INTEGER,
+                allowNull: false
+            },
+            type: {
+                type: Sequelize.ENUM('cnh', 'cpf', 'income', 'property'),
                 allowNull: false
             },
             uri: {
@@ -39,6 +54,7 @@ module.exports = sequelize => {
             timestamps: true,
             underscored: true,
             undescoredAll: true,
+            indexes: [{ unique: true, fields: ['contract_id', 'type'] }]
         }
     );
 
@@ -47,19 +63,6 @@ module.exports = sequelize => {
             foreignKey: "contractId",
             as: "contract",
         });
-    };
-
-    /* 
-        Retorna somente as propriedades públicas 
-    */
-    ContractImage.prototype.public = function () {
-        return {
-            id: this.id,
-            contractId: this.contractId,
-            uri: this.uri,
-            createdAt: this.createdAt,
-            updatedAt: this.updatedAt,
-        };
     };
 
     return ContractImage;

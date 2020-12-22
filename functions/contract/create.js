@@ -8,7 +8,7 @@ module.exports = async ({ body, transaction, services, logger }, context, callba
     await transaction.commit();
 
     return callback(null, {
-        statusCode: 200,
+        statusCode: 201,
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Credentials": true,

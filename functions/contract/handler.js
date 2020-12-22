@@ -2,6 +2,7 @@
 
 const middy = require("middy");
 const { doNotWaitForEmptyEventLoop, validator } = require("middy/middlewares");
+const httpMultipartBodyParser = require('@middy/http-multipart-body-parser');
 const sequelize = require("../../common/sequelize")();
 const services = require("../../common/middlewares/service")(sequelize);
 const jsonBodyParser = require("../../common/middlewares/json-body-parser");
@@ -30,5 +31,13 @@ module.exports = {
         .before(logger)
         .before(services)
         .use(doNotWaitForEmptyEventLoop({ runOnError: true }))
+        .onError(serverError),
+    sendImage: middy(require("./image"))
+        .before(transaction)
+        .before(logger)
+        .before(services)
+        .use(doNotWaitForEmptyEventLoop({ runOnError: true }))
+        .use(httpMultipartBodyParser())
+        .onError(transactionError)
         .onError(serverError),
 };

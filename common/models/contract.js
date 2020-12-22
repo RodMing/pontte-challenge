@@ -3,7 +3,25 @@
 const { Model, Sequelize } = require("sequelize");
 
 module.exports = sequelize => {
-    class Contract extends Model {}
+    class Contract extends Model {
+        public() {
+            return {
+                id: this.id,
+                name: this.name,
+                email: this.email,
+                cpf: this.cpf,
+                amount: this.amount,
+                income: this.income,
+                birthdate: this.birthdate,
+                maritalStatus: this.maritalStatus,
+                address: this.address,
+                status: this.status,
+                images: this.images ? this.images.map(i => i.public()) : [],
+                createdAt: this.createdAt,
+                updatedAt: this.updatedAt,
+            };
+        }
+    }
 
     Contract.init(
         {
@@ -76,27 +94,6 @@ module.exports = sequelize => {
             foreignKey: "contractId",
             as: "images",
         });
-    };
-
-    /* 
-        Retorna somente as propriedades públicas 
-    */
-    Contract.prototype.public = function () {
-        return {
-            id: this.id,
-            name: this.name,
-            email: this.email,
-            cpf: this.cpf,
-            amount: this.amount,
-            income: this.income,
-            birthdate: this.birthdate,
-            maritalStatus: this.maritalStatus,
-            address: this.address,
-            status: this.status,
-            images: this.images ? this.images.map(i => i.public()) : [],
-            createdAt: this.createdAt,
-            updatedAt: this.updatedAt,
-        };
     };
 
     return Contract;
