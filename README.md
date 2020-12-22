@@ -19,3 +19,6 @@ $ npm run deploy
 
 ### Documentation
 [postman documentation](https://documenter.getpostman.com/view/3968862/TVsvg6yi)
+
+### CI/CD
+![cicd](https://pontte-mingattos.s3.amazonaws.com/cicd.png)
