@@ -9,7 +9,9 @@ module.exports = {
         const { id } = pathParameters;
 
         contractService().getById(id).then(contract => {
-            if (contract.state != 'upload') {
+            if (!contract) {
+                reject('not_found')
+            } else if (contract.state != 'upload') {
                 reject('invalid_state');
             } else if (contract.status !== null) {
                 reject('finished');
@@ -23,6 +25,8 @@ module.exports = {
             handler.response = errorResponse(406, {
                 code: "Estado inválido"
             });
+        } else if (handler.error === 'not_found') {
+            handler.response = errorResponse(404, null);
         }
         next();
     }

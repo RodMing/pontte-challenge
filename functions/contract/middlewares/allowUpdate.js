@@ -9,7 +9,9 @@ module.exports = {
         const { id } = pathParameters;
 
         contractService().getById(id).then(contract => {
-            if (contract.status !== null) {
+            if (!contract) {
+                reject('not_found')
+            } else if (contract.status !== null) {
                 reject('finished');
             } else {
                 resolve();
@@ -21,6 +23,8 @@ module.exports = {
             handler.response = errorResponse(406, {
                 code: "Contrato finalizado"
             });
+        } else if (handler.error === 'not_found') {
+            handler.response = errorResponse(404, null);
         }
         next();
     }
